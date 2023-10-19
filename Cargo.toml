@@ -1,0 +1,11 @@
+[package]
+name = "my-leptos-ui"
+version = "0.1.0"
+edition = "2021"
+exclude = [".vscode", "src/main.rs"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+leptos = { version = "0.5.1", features = ["csr"] }
+leptos_icons = { version = "0.1.0", features = ["AiCheckCircleOutlined"] }
