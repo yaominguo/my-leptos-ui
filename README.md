@@ -18,7 +18,7 @@ my-leptos-ui = { version = "0.1.0", git = "https://github.com/yaominguo/my-lepto
 <link rel="stylesheet" href="http://raw.githack.com/yaominguo/my-leptos-ui/main/style/output.css" />
 ```
 
-3. import dependencies then use it in leptos project
+3. use in leptos project
 
 ```rust
 use leptos::*;
@@ -32,9 +32,8 @@ fn main() {
 
 #[component]
 fn App() -> impl IntoView {
-    let (theme, _) = create_signal("light");
     view! {
-        <MyProvider theme>
+        <MyProvider>
             <h1>Buttons</h1>
             <MyButton>
                 default

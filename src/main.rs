@@ -9,9 +9,8 @@ fn main() {
 
 #[component]
 fn App() -> impl IntoView {
-    let (theme, _) = create_signal("light");
     view! {
-        <MyProvider theme>
+        <MyProvider>
             <ButtonDemo />
         </MyProvider>
     }

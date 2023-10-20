@@ -1,11 +1,35 @@
 mod demo;
 mod style;
 
-use crate::{ButtonType, GlobalConfig, Size};
+use crate::{GlobalConfig, Size};
 pub use demo::ButtonDemo;
 use leptos::{component, expect_context, view, Children, IntoView, RwSignal, SignalGetUntracked};
 use std::str::FromStr;
 use style::get_class;
+
+#[derive(Debug, PartialEq, Clone)]
+pub enum ButtonType {
+    Default,
+    Primary,
+    Info,
+    Warning,
+    Error,
+}
+
+impl FromStr for ButtonType {
+    type Err = String;
+
+    fn from_str(input: &str) -> Result<ButtonType, Self::Err> {
+        match input {
+            "default" => Ok(ButtonType::Default),
+            "primary" => Ok(ButtonType::Primary),
+            "info" => Ok(ButtonType::Info),
+            "warning" => Ok(ButtonType::Warning),
+            "error" => Ok(ButtonType::Error),
+            _ => Err("Unrecognized parameter for 'button type'".to_owned()),
+        }
+    }
+}
 
 #[component]
 pub fn MyButton(
@@ -21,8 +45,6 @@ pub fn MyButton(
     #[prop(optional)] class: &'static str,
 ) -> impl IntoView {
     let config = expect_context::<RwSignal<GlobalConfig>>();
-    // let dark = move || config.get().theme.get() == "dark";
-    // let light = move || config.get().theme.get() == "light";
     let mut button_class = get_class(
         Size::from_str(size).unwrap_or(config.get_untracked().size),
         ButtonType::from_str(mode).unwrap_or(ButtonType::Default),
