@@ -2,7 +2,7 @@ use crate::GlobalConfig;
 use leptos::{component, create_rw_signal, provide_context, view, Children, IntoView};
 use std::str::FromStr;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum Size {
     Mini,
     Small,

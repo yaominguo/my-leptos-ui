@@ -11,7 +11,8 @@ fn main() {
 fn App() -> impl IntoView {
     view! {
         <MyProvider>
-            <ButtonDemo />
+            // <ButtonDemo />
+            <InputDemo />
         </MyProvider>
     }
 }

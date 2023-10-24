@@ -1,4 +1,5 @@
-use crate::{ButtonType, Size};
+use crate::Size;
+use std::str::FromStr;
 
 #[allow(clippy::too_many_arguments)]
 pub fn get_class(
@@ -11,7 +12,12 @@ pub fn get_class(
     dashed: bool,
     disabled: bool,
 ) -> String {
-    let mut classes = vec!["flex", "items-center", "transition-all", "rounded-sm"];
+    let mut classes = vec![
+        "flex",
+        "items-center",
+        "transition-all",
+        "disabled:cursor-not-allowed",
+    ];
     match size {
         Size::Mini => {
             classes.push("px-2");
@@ -151,17 +157,41 @@ pub fn get_class(
             }
         }
     }
+
     if rounded {
-        if let Some(index) = classes.iter().position(|&x| x == "rounded-sm") {
-            classes.remove(index);
-        }
         classes.push("rounded-full");
+    } else {
+        classes.push("rounded-sm");
     }
 
     if disabled {
         classes.retain(|x| !x.starts_with("hover:"));
-        classes.push("disabled:cursor-not-allowed opacity-70");
+        classes.push("opacity-70");
     }
 
     classes.join(" ")
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum ButtonType {
+    Default,
+    Primary,
+    Info,
+    Warning,
+    Error,
+}
+
+impl FromStr for ButtonType {
+    type Err = String;
+
+    fn from_str(input: &str) -> Result<ButtonType, Self::Err> {
+        match input {
+            "default" => Ok(ButtonType::Default),
+            "primary" => Ok(ButtonType::Primary),
+            "info" => Ok(ButtonType::Info),
+            "warning" => Ok(ButtonType::Warning),
+            "error" => Ok(ButtonType::Error),
+            _ => Err("Unrecognized parameter for 'button type'".to_owned()),
+        }
+    }
 }

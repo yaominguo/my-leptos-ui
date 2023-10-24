@@ -5,10 +5,13 @@ use leptos_icons::*;
 
 #[component]
 pub fn ButtonDemo() -> impl IntoView {
+    let (disabled, set_disabled) = create_signal(true);
+    let (size, set_size) = create_signal("mini");
+    let handle_click = move |_| set_disabled.set(!disabled.get());
+    let handle_size = move |_| set_size.set("large");
     view! {
         <h1>Button Demo</h1>
-
-        <div class="flex justify-around items-center mt-8 mb-8 w-1/3">
+        <div class="flex justify-around items-center mt-8 mb-8 w-1/2">
             <MyButton>
                 default
             </MyButton>
@@ -26,12 +29,12 @@ pub fn ButtonDemo() -> impl IntoView {
             </MyButton>
         </div>
 
-        <div class="flex justify-around items-center mt-8 mb-8 w-1/3">
+        <div class="flex justify-around items-center mt-8 mb-8 w-1/2">
             <MyButton>
                 default
             </MyButton>
-            <MyButton mode="primary" size="mini">
-                primary
+            <MyButton mode="primary" on:click=handle_size size=size>
+                click to change
             </MyButton>
             <MyButton mode="info" size="small">
                 info
@@ -44,7 +47,7 @@ pub fn ButtonDemo() -> impl IntoView {
             </MyButton>
         </div>
 
-        <div class="flex justify-around items-center mt-8 mb-8 w-1/3">
+        <div class="flex justify-around items-center mt-8 mb-8 w-1/2">
             <MyButton plain=true>
                 default
             </MyButton>
@@ -62,7 +65,7 @@ pub fn ButtonDemo() -> impl IntoView {
             </MyButton>
         </div>
 
-        <div class="flex justify-around items-center mt-8 mb-8 w-1/3">
+        <div class="flex justify-around items-center mt-8 mb-8 w-1/2">
             <MyButton ghost=true>
                 default
             </MyButton>
@@ -80,7 +83,7 @@ pub fn ButtonDemo() -> impl IntoView {
             </MyButton>
         </div>
 
-        <div class="flex justify-around items-center mt-8 mb-8 w-1/3">
+        <div class="flex justify-around items-center mt-8 mb-8 w-1/2">
             <MyButton ghost=true dashed=true>
                 default
             </MyButton>
@@ -98,7 +101,7 @@ pub fn ButtonDemo() -> impl IntoView {
             </MyButton>
         </div>
 
-        <div class="flex justify-around items-center mt-8 mb-8 w-1/3">
+        <div class="flex justify-around items-center mt-8 mb-8 w-1/2">
             <MyButton rounded=true>
                 default
             </MyButton>
@@ -116,7 +119,7 @@ pub fn ButtonDemo() -> impl IntoView {
             </MyButton>
         </div>
 
-        <div class="flex justify-around items-center mt-8 mb-8 w-1/3">
+        <div class="flex justify-around items-center mt-8 mb-8 w-1/2">
             <MyButton text=true>
                 default
             </MyButton>
@@ -147,9 +150,9 @@ pub fn ButtonDemo() -> impl IntoView {
                 <Icon icon=Icon::from(AiCheckCircleOutlined) class="mr-1" />
                 info
             </MyButton>
-            <MyButton mode="warning" rounded=true>
+            <MyButton mode="warning" rounded=true on:click=handle_click>
                 <Icon icon=Icon::from(AiCheckCircleOutlined) class="mr-1" />
-                warning
+                switch disabled
             </MyButton>
             <MyButton mode="error" ghost=true dashed=true>
                 <Icon icon=Icon::from(AiCheckCircleOutlined) class="mr-1" />
@@ -158,23 +161,23 @@ pub fn ButtonDemo() -> impl IntoView {
         </div>
 
         <div class="flex justify-around items-center mt-8 mb-8 w-1/2">
-            <MyButton text=true disabled=true>
+            <MyButton text=true disabled=disabled>
                 <Icon icon=Icon::from(AiCheckCircleOutlined) class="mr-1" />
                 default
             </MyButton>
-            <MyButton mode="primary" disabled=true>
+            <MyButton mode="primary" disabled=disabled>
                 <Icon icon=Icon::from(AiCheckCircleOutlined) class="mr-1" />
                 primary
             </MyButton>
-            <MyButton mode="info" ghost=true disabled=true>
+            <MyButton mode="info" ghost=true disabled=disabled>
                 <Icon icon=Icon::from(AiCheckCircleOutlined) class="mr-1" />
                 info
             </MyButton>
-            <MyButton mode="warning" rounded=true disabled=true>
+            <MyButton mode="warning" rounded=true disabled=disabled>
                 <Icon icon=Icon::from(AiCheckCircleOutlined) class="mr-1" />
                 warning
             </MyButton>
-            <MyButton mode="error" ghost=true dashed=true disabled=true>
+            <MyButton mode="error" ghost=true dashed=true disabled=disabled>
                 <Icon icon=Icon::from(AiCheckCircleOutlined) class="mr-1" />
                 error
             </MyButton>
