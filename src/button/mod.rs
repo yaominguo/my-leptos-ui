@@ -1,13 +1,10 @@
-mod demo;
 mod utils;
 
-use crate::{button::utils::ButtonType, GlobalConfig, Prop, Size};
-pub use demo::ButtonDemo;
+use crate::{GlobalConfig, Prop, Size};
 use leptos::{
-    component, create_signal, expect_context, logging::log, view, watch, Children, IntoView,
-    RwSignal, SignalGet, SignalGetUntracked, SignalSet,
+    component, create_signal, expect_context, view, watch, Children, IntoView, RwSignal, SignalGet,
+    SignalSet,
 };
-use std::str::FromStr;
 use utils::get_class;
 
 #[component]
@@ -48,11 +45,9 @@ pub fn MyButton(
                     return;
                 }
             }
-            let size = Size::from_str(size.into()).unwrap_or(config.get_untracked().size);
-            let button_type = ButtonType::from_str(mode.into()).unwrap_or(ButtonType::Default);
             let mut classes = get_class(
-                size,
-                button_type,
+                Size::from(size.into()).unwrap_or(config.get().size),
+                mode.0.get().into(),
                 plain.into(),
                 rounded.into(),
                 ghost.into(),
@@ -60,7 +55,6 @@ pub fn MyButton(
                 dashed.into(),
                 disabled.into(),
             );
-            log!("get : {}", &classes);
             let class: &str = class.into();
             if !class.is_empty() {
                 classes.push(' ');

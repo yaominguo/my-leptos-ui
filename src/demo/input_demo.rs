@@ -7,32 +7,34 @@ use leptos_icons::*;
 #[component]
 pub fn InputDemo() -> impl IntoView {
     let (text, set_text) = create_signal("".to_string());
+    let (len, set_len) = create_signal(2);
     let on_change = move |e: Event| {
         log!("hello~~~ {:?}", e.target().unwrap().value_of());
         set_text.set(event_target_value(&e))
     };
     let on_focus = move |_| log!("focus~~~");
     let on_blur = move |_| log!("blur~~~");
+    let on_clear = move |_: Event| log!("clear~~~");
     view! {
         <input type="text" on:change=move |e| {
             log!("hello~~~ {:?}", e.target().unwrap().value_of());
             set_text.set(event_target_value(&e))
         }/>
-        <button on:click=move|_|log!("{:?}", text.get())>button</button>
+        <button on:click=move|_|set_len.set(10)>button</button>
         <button on:click=move|_|set_text.set("hello".to_string())>button2</button>
         <div class="px-4">
             <h1>Input Demo</h1>
-            <MyInput class="mb-4" size="mini">
+            <MyInput class="mb-4" size="mini" maxlength=len show_word_limit=true>
                 <span template="suffix">
                     <Icon icon=Icon::from(AiSearchOutlined) class="text-gray-300" />
                 </span>
             </MyInput>
-            <MyInput class="mb-4" size="small" clearable=true value=text on:change=on_change on:focus=on_focus on:blur=on_blur>
+            <MyInput class="mb-4" size="small" clearable=true value=text on:change=on_change on:focus=on_focus on:blur=on_blur on:clear=on_clear>
                 <span template="suffix" >
                     <Icon icon=Icon::from(AiSearchOutlined) class="text-gray-300" />
                 </span>
             </MyInput>
-            <MyInput class="mb-4">
+            <MyInput class="mb-4" maxlength=len show_word_limit=true>
                 <span template="prefix">
                     <Icon icon=Icon::from(AiCheckCircleOutlined) class="text-gray-300" />
                 </span>
@@ -40,13 +42,13 @@ pub fn InputDemo() -> impl IntoView {
                     <Icon icon=Icon::from(AiSearchOutlined) class="text-gray-300" />
                 </span>
             </MyInput>
-            <MyInput class="mb-4" size="large">
+            <MyInput class="mb-4" size="large" maxlength=len show_word_limit=true>
                 <span template="suffix" >
                     <Icon icon=Icon::from(AiSearchOutlined) class="text-gray-300" />
                 </span>
             </MyInput>
             <MyInput class="mb-4" rounded=true disabled=true />
-            <MyInput class="mb-4" textarea=true clearable=true />
+            <MyInput class="mb-4" textarea=true maxlength=100 show_word_limit=true />
         </div>
     }
 }

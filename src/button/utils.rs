@@ -1,5 +1,4 @@
 use crate::Size;
-use std::str::FromStr;
 
 #[allow(clippy::too_many_arguments)]
 pub fn get_class(
@@ -36,6 +35,7 @@ pub fn get_class(
             classes.push("py-3");
             classes.push("text-lg");
         }
+        _ => (),
     }
     match button_type {
         ButtonType::Default => {
@@ -181,17 +181,15 @@ pub enum ButtonType {
     Error,
 }
 
-impl FromStr for ButtonType {
-    type Err = String;
-
-    fn from_str(input: &str) -> Result<ButtonType, Self::Err> {
-        match input {
-            "default" => Ok(ButtonType::Default),
-            "primary" => Ok(ButtonType::Primary),
-            "info" => Ok(ButtonType::Info),
-            "warning" => Ok(ButtonType::Warning),
-            "error" => Ok(ButtonType::Error),
-            _ => Err("Unrecognized parameter for 'button type'".to_owned()),
+impl From<&'static str> for ButtonType {
+    fn from(value: &'static str) -> Self {
+        match value {
+            "default" => ButtonType::Default,
+            "primary" => ButtonType::Primary,
+            "info" => ButtonType::Info,
+            "warning" => ButtonType::Warning,
+            "error" => ButtonType::Error,
+            _ => ButtonType::Default,
         }
     }
 }

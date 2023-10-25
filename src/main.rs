@@ -1,3 +1,6 @@
+mod demo;
+
+use demo::*;
 use leptos::*;
 use my_leptos_ui::*;
 

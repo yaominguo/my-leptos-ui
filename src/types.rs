@@ -1,5 +1,37 @@
 use leptos::{ReadSignal, Signal, SignalGet};
 
+#[derive(Clone, Debug)]
+pub struct GlobalConfig {
+    pub size: Size,
+}
+
+impl GlobalConfig {
+    pub fn new(size: Size) -> Self {
+        Self { size }
+    }
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum Size {
+    Mini,
+    Small,
+    Medium,
+    Large,
+    None,
+}
+
+impl Size {
+    pub fn from(size: &'static str) -> Option<Self> {
+        match size {
+            "mini" => Some(Size::Mini),
+            "small" => Some(Size::Small),
+            "medium" => Some(Size::Medium),
+            "large" => Some(Size::Large),
+            _ => None,
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct Prop<T: 'static>(pub Signal<T>);
 impl<T: 'static + Clone> Prop<T> {

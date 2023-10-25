@@ -3,7 +3,7 @@ use leptos::View;
 
 pub fn get_class(size: Size, disabled: bool, rounded: bool) -> String {
     let mut classes = vec![
-        "group",
+        "relative",
         "flex",
         "items-center",
         "transition-all",
@@ -29,6 +29,7 @@ pub fn get_class(size: Size, disabled: bool, rounded: bool) -> String {
             classes.push("py-2");
             classes.push("text-lg");
         }
+        _ => (),
     }
 
     if rounded {
