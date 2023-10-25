@@ -3,6 +3,7 @@ use leptos::View;
 
 pub fn get_class(size: Size, disabled: bool, rounded: bool) -> String {
     let mut classes = vec![
+        "group",
         "flex",
         "items-center",
         "transition-all",

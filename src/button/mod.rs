@@ -1,11 +1,11 @@
 mod demo;
 mod utils;
 
-use crate::{button::utils::ButtonType, GlobalConfig, PropBool, PropStr, Size};
+use crate::{button::utils::ButtonType, GlobalConfig, Prop, Size};
 pub use demo::ButtonDemo;
 use leptos::{
-    component, create_signal, expect_context, view, watch, Children, IntoView, RwSignal, SignalGet,
-    SignalGetUntracked, SignalSet,
+    component, create_signal, expect_context, logging::log, view, watch, Children, IntoView,
+    RwSignal, SignalGet, SignalGetUntracked, SignalSet,
 };
 use std::str::FromStr;
 use utils::get_class;
@@ -13,16 +13,16 @@ use utils::get_class;
 #[component]
 pub fn MyButton(
     children: Children,
-    #[prop(optional, into)] class: PropStr,
-    #[prop(optional, into)] style: PropStr,
-    #[prop(optional, into)] size: PropStr,
-    #[prop(default = PropStr::new("default"), into)] mode: PropStr,
-    #[prop(optional, into)] plain: PropBool,
-    #[prop(optional, into)] rounded: PropBool,
-    #[prop(optional, into)] ghost: PropBool,
-    #[prop(optional, into)] text: PropBool,
-    #[prop(optional, into)] dashed: PropBool,
-    #[prop(optional, into)] disabled: PropBool,
+    #[prop(optional, into)] class: Prop<&'static str>,
+    #[prop(optional, into)] style: Prop<&'static str>,
+    #[prop(optional, into)] size: Prop<&'static str>,
+    #[prop(default = Prop::new("default"), into)] mode: Prop<&'static str>,
+    #[prop(optional, into)] plain: Prop<bool>,
+    #[prop(optional, into)] rounded: Prop<bool>,
+    #[prop(optional, into)] ghost: Prop<bool>,
+    #[prop(optional, into)] text: Prop<bool>,
+    #[prop(optional, into)] dashed: Prop<bool>,
+    #[prop(optional, into)] disabled: Prop<bool>,
 ) -> impl IntoView {
     let config = expect_context::<RwSignal<GlobalConfig>>();
     let (button_class, set_button_class) = create_signal("".to_string());
@@ -41,7 +41,13 @@ pub fn MyButton(
                 disabled.0.get(),
             )
         },
-        move |_, _, _| {
+        move |new_value, past_value, _| {
+            // don't get_class repeatedly if parameters are same like before
+            if let Some(v) = past_value {
+                if new_value == v {
+                    return;
+                }
+            }
             let size = Size::from_str(size.into()).unwrap_or(config.get_untracked().size);
             let button_type = ButtonType::from_str(mode.into()).unwrap_or(ButtonType::Default);
             let mut classes = get_class(
@@ -54,7 +60,7 @@ pub fn MyButton(
                 dashed.into(),
                 disabled.into(),
             );
-
+            log!("get : {}", &classes);
             let class: &str = class.into();
             if !class.is_empty() {
                 classes.push(' ');

@@ -1,57 +1,44 @@
 use leptos::{ReadSignal, Signal, SignalGet};
 
 #[derive(Debug, Clone, Copy)]
-pub struct PropStr(pub Signal<&'static str>);
-impl PropStr {
-    pub fn new(value: &'static str) -> Self {
-        Self(Signal::derive(move || value))
+pub struct Prop<T: 'static>(pub Signal<T>);
+impl<T: 'static + Clone> Prop<T> {
+    pub fn new(value: T) -> Self {
+        Self(Signal::derive(move || value.clone()))
     }
 }
-impl From<PropStr> for &'static str {
-    fn from(value: PropStr) -> Self {
+impl From<Prop<&'static str>> for &'static str {
+    fn from(value: Prop<&'static str>) -> Self {
         value.0.get()
     }
 }
-impl From<&'static str> for PropStr {
-    fn from(value: &'static str) -> Self {
-        Self::new(value)
-    }
-}
-impl From<ReadSignal<&'static str>> for PropStr {
-    fn from(value: ReadSignal<&'static str>) -> Self {
-        Self(value.into())
-    }
-}
-impl Default for PropStr {
-    fn default() -> Self {
-        Self::new("")
-    }
-}
-
-#[derive(Debug, Clone, Copy)]
-pub struct PropBool(pub Signal<bool>);
-impl PropBool {
-    pub fn new(value: bool) -> Self {
-        Self(Signal::derive(move || value))
-    }
-}
-impl From<PropBool> for bool {
-    fn from(value: PropBool) -> Self {
+impl From<Prop<String>> for String {
+    fn from(value: Prop<String>) -> Self {
         value.0.get()
     }
 }
-impl From<bool> for PropBool {
-    fn from(value: bool) -> Self {
+impl From<Prop<bool>> for bool {
+    fn from(value: Prop<bool>) -> Self {
+        value.0.get()
+    }
+}
+impl From<Prop<i32>> for i32 {
+    fn from(value: Prop<i32>) -> Self {
+        value.0.get()
+    }
+}
+impl<T: 'static + Clone> From<T> for Prop<T> {
+    fn from(value: T) -> Self {
         Self::new(value)
     }
 }
-impl From<ReadSignal<bool>> for PropBool {
-    fn from(value: ReadSignal<bool>) -> Self {
+impl<T: 'static> From<ReadSignal<T>> for Prop<T> {
+    fn from(value: ReadSignal<T>) -> Self {
         Self(value.into())
     }
 }
-impl Default for PropBool {
+impl<T: 'static + Clone + Default> Default for Prop<T> {
     fn default() -> Self {
-        Self::new(false)
+        Self::new(T::default())
     }
 }
