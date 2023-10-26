@@ -29,7 +29,6 @@ pub fn get_class(size: Size, disabled: bool, rounded: bool) -> String {
             classes.push("py-2");
             classes.push("text-lg");
         }
-        _ => (),
     }
 
     if rounded {
@@ -47,8 +46,9 @@ pub fn get_class(size: Size, disabled: bool, rounded: bool) -> String {
 }
 
 pub fn get_template_value(view: View) -> String {
-    view.into_html_element()
-        .unwrap()
-        .get_attribute("template")
-        .unwrap_or("".to_string())
+    if let Ok(el) = view.into_html_element() {
+        el.get_attribute("template").unwrap_or("".to_string())
+    } else {
+        "".to_string()
+    }
 }

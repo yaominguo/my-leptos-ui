@@ -98,6 +98,18 @@ pub fn MyInput(
             set_show_clear.set(false);
         }
     };
+    let _ = watch(
+        move || value.0.get(),
+        move |value, _, _| {
+            if clearable.into() && !value.is_empty() {
+                set_show_clear.set(true);
+            } else {
+                set_show_clear.set(false);
+            }
+        },
+        true,
+    );
+
     let input_element: NodeRef<Input> = create_node_ref();
     let div_element: NodeRef<Div> = create_node_ref();
     let handle_clear = move |e: MouseEvent| {

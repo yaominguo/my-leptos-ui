@@ -1,5 +1,27 @@
 use crate::Size;
 
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum ButtonType {
+    Default,
+    Primary,
+    Info,
+    Warning,
+    Error,
+}
+
+impl From<&'static str> for ButtonType {
+    fn from(value: &'static str) -> Self {
+        match value {
+            "default" => ButtonType::Default,
+            "primary" => ButtonType::Primary,
+            "info" => ButtonType::Info,
+            "warning" => ButtonType::Warning,
+            "error" => ButtonType::Error,
+            _ => ButtonType::Default,
+        }
+    }
+}
+
 #[allow(clippy::too_many_arguments)]
 pub fn get_class(
     size: Size,
@@ -35,7 +57,6 @@ pub fn get_class(
             classes.push("py-3");
             classes.push("text-lg");
         }
-        _ => (),
     }
     match button_type {
         ButtonType::Default => {
@@ -170,26 +191,4 @@ pub fn get_class(
     }
 
     classes.join(" ")
-}
-
-#[derive(Debug, PartialEq, Clone, Copy)]
-pub enum ButtonType {
-    Default,
-    Primary,
-    Info,
-    Warning,
-    Error,
-}
-
-impl From<&'static str> for ButtonType {
-    fn from(value: &'static str) -> Self {
-        match value {
-            "default" => ButtonType::Default,
-            "primary" => ButtonType::Primary,
-            "info" => ButtonType::Info,
-            "warning" => ButtonType::Warning,
-            "error" => ButtonType::Error,
-            _ => ButtonType::Default,
-        }
-    }
 }

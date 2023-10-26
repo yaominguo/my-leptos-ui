@@ -17,7 +17,6 @@ pub enum Size {
     Small,
     Medium,
     Large,
-    None,
 }
 
 impl Size {

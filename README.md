@@ -22,7 +22,7 @@ my-leptos-ui = { version = "0.1.0", git = "https://github.com/yaominguo/my-lepto
 
 ```rust
 use leptos::*;
-use my_leptos_ui::{MyButton, MyProvider};
+use my_leptos_ui::*;
 
 fn main() {
     mount_to_body(|| {
@@ -32,36 +32,14 @@ fn main() {
 
 #[component]
 fn App() -> impl IntoView {
+    let (text, set_text) = create_signal("".to_string());
+    let change_text = move |_| set_text.set("Hello World!".to_string());
     view! {
         <MyProvider>
-            <h1>Buttons</h1>
-            <MyButton>
-                default
-            </MyButton>
-            <MyButton mode="primary" size="mini">
-                primary
-            </MyButton>
-            <MyButton mode="info" size="small">
-                info
-            </MyButton>
-            <MyButton mode="warning" size="medium">
-                warning
-            </MyButton>
-            <MyButton mode="error" size="large">
-                error
-            </MyButton>
-            <MyButton mode="primary" ghost=true>
-                primary
-            </MyButton>
-            <MyButton mode="info" ghost=true dashed=true>
-                info
-            </MyButton>
-            <MyButton mode="warning" rounded=true>
-                warning
-            </MyButton>
-            <MyButton mode="error" disabled=true>
-                error
-            </MyButton>
+            <MySpace justify="center" align="center" style="height:100vh;">
+                <MyInput value=text clearable=true size="small" />
+                <MyButton on:click=change_text size="small">Change Text</MyButton>
+            </MySpace>
         </MyProvider>
     }
 }
